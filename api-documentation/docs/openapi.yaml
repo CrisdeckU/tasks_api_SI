@@ -1,0 +1,187 @@
+openapi: 3.0.0
+info:
+  title: Task Management API
+  description: API para gestionar tareas, permitiendo crear, listar, actualizar, eliminar y filtrar tareas por estado.
+  version: 1.0.0
+paths:
+  /v1/tasks:
+    get:
+      summary: Listar todas las tareas
+      description: Obtiene una lista de todas las tareas.
+      responses:
+        '200':
+          description: Lista de tareas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+    post:
+      summary: Crear una nueva tarea
+      description: Crea una tarea nueva en el sistema.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreate'
+      responses:
+        '201':
+          description: Tarea creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+
+  /v1/tasks/{id}:
+    get:
+      summary: Obtener una tarea específica
+      description: Obtiene los detalles de una tarea específica por ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalles de la tarea
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '404':
+          description: Tarea no encontrada
+
+    put:
+      summary: Actualizar una tarea existente
+      description: Actualiza los detalles de una tarea específica.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdate'
+      responses:
+        '200':
+          description: Tarea actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '404':
+          description: Tarea no encontrada
+
+    patch:
+      summary: Actualizar parcialmente una tarea existente
+      description: Actualiza parcialmente los detalles de una tarea específica.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdate'
+      responses:
+        '200':
+          description: Tarea actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '404':
+          description: Tarea no encontrada
+
+    delete:
+      summary: Eliminar una tarea
+      description: Elimina una tarea específica por ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Tarea eliminada exitosamente
+        '404':
+          description: Tarea no encontrada
+
+  /v1/tasks/status/{status}:
+    get:
+      summary: Filtrar tareas por estado
+      description: Obtiene una lista de tareas según su estado.
+      parameters:
+        - name: status
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [pendiente, en progreso, completada]
+      responses:
+        '200':
+          description: Lista de tareas filtradas por estado
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "Revisar código"
+        description:
+          type: string
+          example: "Revisar el código del módulo de usuarios"
+        status:
+          type: string
+          enum: [pendiente, en progreso, completada]
+          example: "en progreso"
+
+    TaskCreate:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Revisar código"
+        description:
+          type: string
+          example: "Revisar el código del módulo de usuarios"
+        status:
+          type: string
+          enum: [pendiente, en progreso, completada]
+          example: "pendiente"
+
+    TaskUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Revisar código actualizado"
+        description:
+          type: string
+          example: "Actualizar el módulo de usuarios"
+        status:
+          type: string
+          enum: [pendiente, en progreso, completada]
+          example: "completada"
