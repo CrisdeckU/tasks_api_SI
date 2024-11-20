@@ -33,7 +33,7 @@ CREATE TABLE Tasks (
     id INT PRIMARY KEY,
     title NVARCHAR(255) NOT NULL,
     description NVARCHAR(500),
-    status NVARCHAR(50) CHECK (status IN ('pendiente', 'en progreso', 'completado')) NOT NULL
+    status NVARCHAR(50) CHECK (status IN ('pendiente', 'en progreso', 'completada')) NOT NULL
 );
 
 USE TasksManagementSI;
@@ -53,4 +53,4 @@ INSERT INTO Tasks (id, title, description, status)
 VALUES (4, 'Depurar errores', 'Corregir errores detectados en la última revisión', 'en progreso');
 
 INSERT INTO Tasks (id, title, description, status)
-VALUES (5, 'Implementar autenticación', 'Agregar sistema de autenticación de usuarios', 'completado');
+VALUES (5, 'Implementar autenticación', 'Agregar sistema de autenticación de usuarios', 'completada');
